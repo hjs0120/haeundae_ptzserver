@@ -1,0 +1,13 @@
+aiofiles==24.1.0
+av==12.3.0
+fastapi==0.112.2
+hypercorn==0.17.3
+numpy<2.0.0
+onvif_zeep==0.2.12
+opencv_python==4.10.0.84
+pyodbc==5.1.0
+Requests==2.32.3
+Shapely==2.0.6
+torch==2.4.0
+ultralytics==8.2.78
+websockets==12.0
