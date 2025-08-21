@@ -1,4 +1,4 @@
-from torch.multiprocessing import Process
+from torch.multiprocessing import Process, Queue
 import os 
 #from store.broadcastStore import BroadcastStore
 from store.cctvStore import DetectCCTVStore, PtzCCTVStore, DetectCCTV, PtzCCTV
@@ -21,10 +21,37 @@ import websockets
 import asyncio
 import gc
 import time
+
+import logging
+import logging.config
+import json
+from ptz_mqtt import subscriber_loop
+
+from config import CONFIG
+
+
 # from config import BACKEND_HOST
 
 #from dotenv import load_dotenv
 #load_dotenv()
+
+def setup_logging(
+    default_path="logger.json",
+    default_level=logging.INFO,
+    env_key="LOG_CFG"
+):
+    """logger.json 설정을 불러와 logging 초기화"""
+    path = default_path
+    value = os.getenv(env_key, None)
+    if value:
+        path = value
+
+    if os.path.exists(path):
+        with open(path, "rt", encoding="utf-8") as f:
+            config = json.load(f)
+        logging.config.dictConfig(config)
+    else:
+        logging.basicConfig(level=default_level)
 
 class VideoServer():
     def __init__(self, BACKEND_HOST = "192.168.0.31:7000"):
@@ -40,6 +67,9 @@ class VideoServer():
         self.configSettingStore = ConfigSettingStore(self.BACKEND_HOST)
         
         self.getDataLoad()
+
+        self.ptz_event_queues = {}
+        self.ptz_mqtt = None
         
     def getDataLoad(self):
         #self.broadcastStore.getData()
@@ -61,21 +91,21 @@ class VideoServer():
         self.configSetting = self.configSettingStore.configSettings
         
     def selectServerConfig(self) -> ServerConfig:
-        print("서버 설정을 선택해 주세요")
+        logger.info("서버 설정을 선택해 주세요")
         
         
-        userInput = os.getenv('SERVER_INDEX')
+        userInput = CONFIG["SERVER_INDEX"]
         try:
             inputServerIndex = int(userInput) - 1
         except :
-            print("잘못된 입력 입니다, 다시입력해 주세요")
+            logger.error("잘못된 입력 입니다, 다시입력해 주세요")
 
         
         index = self.config[inputServerIndex].index
         ptzPortList = self.config[inputServerIndex].ptzPortList
         wsIndex = self.config[inputServerIndex].wsIndex
         #print(f"{index}번 서버 : \n - 지능형 영상 포트 : {detectPortList} \n - PTZ 영상 포트 : {ptzPortList} \n - 포트별 영상 갯수 : {wsIndex}")
-        print(f"{index}번 서버 : \n - PTZ 영상 포트 : {ptzPortList} \n - 포트별 영상 갯수 : {wsIndex}")
+        logger.info(f"{index}번 서버 : \n - PTZ 영상 포트 : {ptzPortList} \n - 포트별 영상 갯수 : {wsIndex}")
         
         return self.config[inputServerIndex]
 
@@ -118,11 +148,11 @@ class VideoServer():
                         try:
                             response = requests.get(f"http://{self.BACKEND_HOST}/forVideoServer/setDetectWsIndex?cctvIndex={detectCCTV.index}&ip={wsUrl['ip']}&port={wsUrl['port']}&index={wsUrl['index']}")
                             if response.status_code == 200 :
-                                print("setDetectWsIndex Success")
+                                logger.info("setDetectWsIndex Success")
                             else :
-                                print("setDetectWsIndex Fail")
+                                logger.error("setDetectWsIndex Fail")
                         except Exception as e :
-                            print("setDetectWsIndex Fail : ", e)
+                            logger.error("setDetectWsIndex Fail : ", e)
                         
                     
             elif cctvType == "ptz":
@@ -131,11 +161,11 @@ class VideoServer():
                         try:
                             response = requests.get(f"http://{self.BACKEND_HOST}/forVideoServer/setPtzWsIndex?cctvIndex={ptzCCTV.index}&ip={wsUrl['ip']}&port={wsUrl['port']}&index={wsUrl['index']}")
                             if response.status_code == 200 :
-                                print("setPtzWsIndex Success")
+                                logger.info("setPtzWsIndex Success")
                             else :
-                                print("setPtzWsIndex Fail")
+                                logger.error("setPtzWsIndex Fail")
                         except Exception as e :
-                            print("setPtzWsIndex Fail : ", e)
+                            logger.error("setPtzWsIndex Fail : ", e)
 
             else:
                 pass
@@ -245,6 +275,10 @@ class VideoServer():
                     saveVideoList: list[SaveVideo] = []
                     
                     for i, ptzCCTV in enumerate(ptzCCTVs):
+                        # 채널별 이벤트 큐 준비
+                        if ptzCCTV.index not in self.ptz_event_queues:
+                            self.ptz_event_queues[ptzCCTV.index] = Queue(maxsize=100)
+
                         sharedPtzData = SharedPtzData()
                         sharedPtzDataList.append(sharedPtzData)
                         sharedDetectDataListForPtz:list[SharedDetectData] = []
@@ -268,27 +302,37 @@ class VideoServer():
                         self.compareWsIndex["ptz"][ptzCCTV] = wsUrl
                         
                         self.ptzVideoProcess.append(Process(target=video, 
-                                                            args=(ptzCCTV, sharedPtzData, self.BACKEND_HOST, selectedConfig, saveVideoList), 
+                                                            args=(ptzCCTV, sharedPtzData, self.BACKEND_HOST, selectedConfig, saveVideoList,
+                                                            self.ptz_event_queues.get(ptzCCTV.index)), 
                                                             daemon=True))
                     
                     self.ptzVideoServers.append(PtzVideoServer(port, sharedPtzDataList, selectedConfig, self.ptzs))
             
 
         #self.serverProcs = [Process(target=videoServer.run, args=(), daemon=True) for videoServer in self.detectVideoServers + self.ptzVideoServers]
-        self.serverProcs = [Process(target=videoServer.run, args=(), daemon=True) for videoServer in self.ptzVideoServers]
+        #self.serverProcs = [Process(target=videoServer.run, args=(), daemon=True) for videoServer in self.ptzVideoServers]
         #self.serverProcs = [Process(target=videoServer.run, args=(), daemon=True) for videoServer in self.detectVideoServers]
+        self.serverProcs = [Process(target=videoServer.run, args=(), daemon=True) for videoServer in self.ptzVideoServers]
+        # MQTT 서브스크라이버 프로세스 1개 생성
+        self.ptz_mqtt = Process(
+            target=subscriber_loop,
+            args=(self.ptz_event_queues,),
+            daemon=True
+        )
 
         
     
     def runProcess(self):
         try:
+            if self.ptz_mqtt is not None and not self.ptz_mqtt.is_alive():
+                self.ptz_mqtt.start()
             #for proc in self.serverProcs + self.ptzVideoProcess + self.detectVideoProcess + self.ptzAutoControlProcs:
             #for proc in self.serverProcs + self.detectVideoProcess :
             for proc in self.serverProcs + self.ptzVideoProcess + self.ptzAutoControlProcs:
                 proc.start()
             asyncio.run(self.sendMessage(f"ws://{self.BACKEND_HOST}", 'reload'))
         except Exception as e:
-            print("runProcess error:", e)
+            logger.error("runProcess error:", e)
 
     def killProcess(self):
         try:
@@ -300,13 +344,28 @@ class VideoServer():
                     proc.join()
         except:
             pass
+        # MQTT 구독자 종료
+        try:
+            if self.ptz_mqtt is not None and self.ptz_mqtt.is_alive():
+                self.ptz_mqtt.kill()
+                self.ptz_mqtt.join()
+        except:
+            pass
+
         gc.collect()
         
     async def sendMessage(self, uri, message):
         async with websockets.connect(uri) as websocket:
             await websocket.send(message)
-            print(f"Message sent: {message}")
+            logger.info(f"Message sent: {message}")
         
 if __name__ == "__main__":
-    videoserver = VideoServer(os.environ["BACKEND_HOST"])
+    setup_logging()
+    logger = logging.getLogger(__name__)
+
+    logger.info("서비스 시작")
+    logger.debug("디버그 모드 활성화")
+    logger.error("에러 발생 예시")
+    
+    videoserver = VideoServer(CONFIG["BACKEND_HOST"])
     videoserver.main()

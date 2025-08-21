@@ -1,0 +1,488 @@
+2025-08-20 07:39:42 [ERROR] __main__:341 - 에러 발생 예시
+2025-08-20 08:10:10 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 08:10:10 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-20 08:10:10 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-20 08:10:10 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-20 08:10:10 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-20 08:10:17 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 08:10:17 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-20 08:10:17 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-20 08:10:17 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-20 08:10:17 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-20 08:47:14 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 08:47:14 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-20 08:47:14 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-20 08:47:14 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-20 08:47:14 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-20 08:51:06 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 08:51:06 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-20 08:51:06 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-20 08:51:06 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-20 08:51:06 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-20 08:51:30 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 08:51:30 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-20 08:51:30 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-20 08:51:30 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-20 08:51:30 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-20 08:52:56 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 08:52:56 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-20 08:52:56 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-20 08:52:56 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-20 08:52:56 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-20 08:56:20 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 08:56:20 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-20 08:56:20 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-20 08:56:20 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-20 08:56:20 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-20 08:57:20 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 08:57:20 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-20 08:57:20 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-20 08:57:20 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-20 08:57:20 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-20 08:58:21 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 08:58:21 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-20 08:58:21 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-20 08:58:21 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-20 08:58:21 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-20 08:59:19 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 08:59:19 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-20 08:59:19 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-20 08:59:19 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-20 08:59:19 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-20 09:01:11 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 09:01:11 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-20 09:01:11 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-20 09:01:11 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-20 09:01:11 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-20 09:02:12 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 09:02:12 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-20 09:02:12 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-20 09:02:12 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-20 09:02:12 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-20 09:03:59 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 09:03:59 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-20 09:03:59 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-20 09:03:59 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-20 09:03:59 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-20 09:04:22 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 09:04:23 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-20 09:04:23 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-20 09:04:23 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-20 09:04:23 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-20 09:07:15 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 09:07:15 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-20 09:07:15 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-20 09:07:15 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-20 09:07:15 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-20 09:07:38 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 09:07:38 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-20 09:07:38 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-20 09:07:38 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-20 09:07:38 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-20 09:07:47 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 09:07:47 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-20 09:07:47 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-20 09:07:47 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-20 09:07:47 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-20 09:08:19 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 09:08:19 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-20 09:08:19 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-20 09:08:19 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-20 09:08:19 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-20 09:09:13 [ERROR] api.ptzServer:187 - 5030/0: close, clients=1
+2025-08-20 09:09:14 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 09:09:14 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-20 09:09:14 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-20 09:09:14 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-20 09:09:14 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-20 09:10:18 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 09:10:18 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-20 09:10:18 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-20 09:10:18 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-20 09:10:18 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-20 09:11:14 [ERROR] api.ptzServer:187 - 5030/0: close, clients=1
+2025-08-20 09:11:14 [ERROR] api.ptzServer:187 - 5030/1: close, clients=2
+2025-08-20 09:11:14 [ERROR] api.ptzServer:187 - 5030/2: close, clients=2
+2025-08-20 09:11:14 [ERROR] api.ptzServer:187 - 5030/3: close, clients=2
+2025-08-20 09:11:14 [ERROR] api.ptzServer:187 - 5030/4: close, clients=2
+2025-08-20 09:11:38 [ERROR] api.ptzServer:187 - 5030/0: close, clients=1
+2025-08-20 09:11:38 [ERROR] api.ptzServer:187 - 5030/1: close, clients=2
+2025-08-20 09:11:38 [ERROR] api.ptzServer:187 - 5030/2: close, clients=2
+2025-08-20 09:11:38 [ERROR] api.ptzServer:187 - 5030/3: close, clients=2
+2025-08-20 09:11:38 [ERROR] api.ptzServer:187 - 5030/4: close, clients=2
+2025-08-20 09:11:38 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 09:11:38 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-20 09:11:38 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-20 09:11:38 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-20 09:11:38 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-20 09:17:15 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 09:17:15 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-20 09:17:15 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-20 09:17:15 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-20 09:17:15 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-20 09:23:18 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-20 09:23:18 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-20 09:23:18 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-20 09:23:18 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-20 09:23:18 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-21 02:07:30 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 02:07:30 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-21 02:07:30 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-21 02:07:30 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-21 02:07:30 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-21 02:21:08 [ERROR] api.ptzServer:187 - 5030/0: close, clients=1
+2025-08-21 02:21:08 [ERROR] api.ptzServer:187 - 5030/1: close, clients=2
+2025-08-21 02:21:08 [ERROR] api.ptzServer:187 - 5030/2: close, clients=2
+2025-08-21 02:21:08 [ERROR] api.ptzServer:187 - 5030/3: close, clients=2
+2025-08-21 02:21:08 [ERROR] api.ptzServer:187 - 5030/4: close, clients=2
+2025-08-21 02:21:33 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-21 02:21:33 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-21 02:21:33 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-21 02:21:33 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 02:21:33 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-21 13:00:12 [ERROR] __main__:341 - 에러 발생 예시
+2025-08-21 13:02:07 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 13:02:07 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 13:02:07 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 13:02:07 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 13:02:07 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 13:21:18 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 13:21:18 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 13:21:18 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 13:21:18 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 13:21:18 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 13:29:06 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 13:29:06 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 13:29:06 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 13:29:06 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 13:29:06 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 13:32:36 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 13:32:36 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 13:32:36 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 13:32:36 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 13:32:36 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 13:40:39 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 13:40:39 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 13:40:39 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 13:40:39 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 13:40:39 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 13:42:04 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 13:42:04 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 13:42:04 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 13:42:04 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 13:42:04 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 13:47:08 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 13:47:08 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 13:47:08 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 13:47:08 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 13:47:08 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 13:52:07 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 13:52:07 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 13:52:07 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 13:52:07 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 13:52:07 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 13:55:57 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 13:55:57 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 13:55:57 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 13:55:57 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 13:55:57 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 14:03:28 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 14:03:28 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 14:03:28 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 14:03:28 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 14:03:28 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 14:13:28 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 14:13:28 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 14:13:28 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 14:13:28 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 14:13:28 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 14:19:10 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 14:19:10 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 14:19:10 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 14:19:10 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 14:19:10 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 14:59:37 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 14:59:37 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 14:59:37 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 14:59:37 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 14:59:37 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 15:12:43 [ERROR] __main__:368 - 에러 발생 예시
+2025-08-21 15:12:43 [WARNING] ptz_mqtt:42 - [MQTT] disabled: paho-mqtt not installed (No module named 'paho'). Subscriber will not connect but process stays alive.
+2025-08-21 15:13:35 [ERROR] __main__:368 - 에러 발생 예시
+2025-08-21 15:18:05 [ERROR] __main__:368 - 에러 발생 예시
+2025-08-21 15:19:17 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 15:19:17 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 15:19:17 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 15:19:17 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 15:19:17 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 15:26:28 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:26:28 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:26:31 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:26:31 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:26:34 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:26:34 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:26:38 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:26:38 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:26:41 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:26:41 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:26:44 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:26:44 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:26:46 [ERROR] api.ptzServer:187 - 5030/0: close, clients=1
+2025-08-21 15:26:46 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-21 15:26:46 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-21 15:26:46 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-21 15:26:46 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-21 15:26:47 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:26:47 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:26:50 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:26:50 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:26:53 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:26:54 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:26:57 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:26:57 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:26:58 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:26:58 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:00 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:00 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:01 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:01 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:03 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:03 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:05 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:05 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:06 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:06 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:08 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:08 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:09 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:09 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:11 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:11 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:13 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:13 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:14 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:14 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:16 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:16 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:17 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:17 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:19 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:19 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:21 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:21 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:22 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:22 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:24 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:24 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:25 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:25 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:27 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:27 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:28 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:29 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:30 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:30 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:32 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:32 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:33 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:33 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:35 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:35 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:36 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:36 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:38 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:38 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:40 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:40 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:41 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:41 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:43 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:43 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:44 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:44 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:46 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:46 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:48 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:48 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:49 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:49 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:51 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:51 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:52 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:52 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:54 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:54 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:55 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:56 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:57 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:27:58 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:27:59 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:28:00 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:28:01 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:28:01 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:28:03 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:28:04 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:28:04 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:28:05 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:28:07 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:28:08 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:28:08 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:28:11 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:28:11 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:28:12 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:28:14 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:28:14 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:28:15 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:28:15 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:28:17 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:28:17 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:28:18 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:28:18 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:28:20 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:28:20 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:28:21 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:28:21 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:28:24 [ERROR] videoProcess.videoProcess:296 - 1번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:28:24 [ERROR] videoProcess.videoProcess:308 - {"message":"videoServer Log 기록 성공"}
+2025-08-21 15:28:24 [ERROR] videoProcess.videoProcess:296 - 3번 영상 재생 에러 : name 'future_needed_sec' is not defined
+2025-08-21 15:30:55 [ERROR] __main__:368 - 에러 발생 예시
+2025-08-21 15:31:26 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 15:31:26 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 15:31:26 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 15:31:26 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 15:31:26 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 15:41:01 [ERROR] api.ptzServer:187 - 5030/0: close, clients=1
+2025-08-21 15:41:01 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-21 15:41:01 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-21 15:41:01 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-21 15:41:01 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-21 15:42:08 [ERROR] api.ptzServer:187 - 5030/0: close, clients=1
+2025-08-21 15:42:08 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-21 15:42:08 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-21 15:42:08 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-21 15:42:08 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-21 15:47:16 [ERROR] api.ptzServer:187 - 5030/0: close, clients=1
+2025-08-21 15:47:16 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-21 15:47:16 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-21 15:47:16 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-21 15:47:16 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-21 15:48:10 [ERROR] api.ptzServer:187 - 5030/0: close, clients=2
+2025-08-21 15:48:10 [ERROR] api.ptzServer:187 - 5030/1: close, clients=2
+2025-08-21 15:48:10 [ERROR] api.ptzServer:187 - 5030/2: close, clients=2
+2025-08-21 15:48:10 [ERROR] api.ptzServer:187 - 5030/3: close, clients=2
+2025-08-21 15:48:10 [ERROR] api.ptzServer:187 - 5030/4: close, clients=2
+2025-08-21 15:49:56 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-21 15:49:56 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-21 15:49:56 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-21 15:49:56 [ERROR] api.ptzServer:187 - 5030/0: close, clients=1
+2025-08-21 15:49:56 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-21 15:50:49 [ERROR] api.ptzServer:187 - 5030/0: close, clients=1
+2025-08-21 15:50:49 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-21 15:50:49 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-21 15:50:49 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-21 15:50:49 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-21 16:15:41 [ERROR] api.ptzServer:187 - 5030/0: close, clients=1
+2025-08-21 16:15:41 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-21 16:15:41 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-21 16:15:41 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-21 16:15:41 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-21 16:19:25 [ERROR] api.ptzServer:187 - 5030/0: close, clients=1
+2025-08-21 16:19:25 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-21 16:19:25 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-21 16:19:25 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-21 16:19:25 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-21 16:39:33 [ERROR] api.ptzServer:187 - 5030/0: close, clients=1
+2025-08-21 16:39:33 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-21 16:39:33 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-21 16:39:33 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-21 16:39:33 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-21 16:39:54 [ERROR] api.ptzServer:187 - 5030/0: close, clients=1
+2025-08-21 16:39:54 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-21 16:39:54 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-21 16:39:54 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-21 16:39:54 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-21 16:40:14 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-21 16:40:14 [ERROR] api.ptzServer:187 - 5030/0: close, clients=1
+2025-08-21 16:40:14 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-21 16:40:14 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-21 16:40:14 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-21 16:46:54 [ERROR] api.ptzServer:187 - 5030/0: close, clients=1
+2025-08-21 16:46:54 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-21 16:46:54 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-21 16:46:54 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-21 16:46:54 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-21 16:50:18 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-21 16:50:18 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-21 16:50:19 [ERROR] api.ptzServer:187 - 5030/0: close, clients=1
+2025-08-21 16:50:19 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-21 16:50:19 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-21 17:10:24 [ERROR] api.ptzServer:187 - 5030/0: close, clients=1
+2025-08-21 17:10:24 [ERROR] api.ptzServer:187 - 5030/1: close, clients=1
+2025-08-21 17:10:24 [ERROR] api.ptzServer:187 - 5030/2: close, clients=1
+2025-08-21 17:10:24 [ERROR] api.ptzServer:187 - 5030/3: close, clients=1
+2025-08-21 17:10:24 [ERROR] api.ptzServer:187 - 5030/4: close, clients=1
+2025-08-21 08:22:39 [ERROR] __main__:368 - 에러 발생 예시
+2025-08-21 08:24:46 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 08:24:46 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 08:24:46 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 08:24:46 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 08:24:46 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 08:24:59 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 08:24:59 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 08:24:59 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 08:24:59 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 08:24:59 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 08:25:05 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 08:25:05 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 08:25:05 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 08:25:05 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 08:25:05 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 08:25:12 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 08:25:12 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 08:25:12 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 08:25:12 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 08:25:12 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 08:25:14 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 08:25:14 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 08:25:14 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 08:25:14 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 08:25:14 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 08:25:16 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 08:25:16 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 08:25:16 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 08:25:16 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 08:25:16 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 08:25:30 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 08:25:30 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 08:25:30 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 08:25:30 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 08:25:30 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 08:25:36 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 08:25:36 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 08:25:36 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 08:25:36 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 08:25:36 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 08:25:41 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 08:25:41 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 08:25:41 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 08:25:41 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 08:25:41 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 08:25:52 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 08:25:52 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 08:25:52 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 08:25:52 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 08:25:52 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 08:26:16 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 08:26:16 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 08:26:16 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 08:26:16 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 08:26:16 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 08:26:30 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 08:26:30 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 08:26:30 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 08:26:30 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0
+2025-08-21 08:26:30 [ERROR] api.ptzServer:187 - 5030/4: close, clients=0
+2025-08-21 08:34:14 [ERROR] api.ptzServer:187 - 5030/0: close, clients=0
+2025-08-21 08:34:14 [ERROR] api.ptzServer:187 - 5030/1: close, clients=0
+2025-08-21 08:34:14 [ERROR] api.ptzServer:187 - 5030/2: close, clients=0
+2025-08-21 08:34:14 [ERROR] api.ptzServer:187 - 5030/3: close, clients=0

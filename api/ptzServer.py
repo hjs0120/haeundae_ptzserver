@@ -12,6 +12,9 @@ from videoProcess.videoProcess import SharedPtzData
 
 import time
 
+import logging
+logger = logging.getLogger(__name__)
+
 class PtzVideoServer():
     def __init__(self, port, sharedPtzDataList: list[SharedPtzData], serverConfig: ServerConfig, ptzs:dict[Ptz, bool]):
         super(PtzVideoServer, self).__init__()
@@ -71,7 +74,7 @@ class PtzVideoServer():
             index = int(index)
             await websocket.accept()
             streamClient[index].append(websocket)
-            print(f'{port}/{index}: accept, clients={len(streamClient[index])}')
+            logger.info(f'{port}/{index}: accept, clients={len(streamClient[index])}')
 
             # 0) 기본 FPS로 즉시 시작 (환경변수 DEFAULT_STREAM_FPS 허용; 없으면 10)
             
@@ -102,7 +105,7 @@ class PtzVideoServer():
                             await websocket.close()
                             if websocket in streamClient[index]:
                                 streamClient[index].remove(websocket)
-                            print(f'{port}/{index}: stop by client')
+                            logger.info(f'{port}/{index}: stop by client')
                             break
 
                         # 숫자면 FPS 변경 / 재개
@@ -119,7 +122,7 @@ class PtzVideoServer():
                             await websocket.send_text(f"fps={int(fps)}")
                             # 즉시 새 FPS 반영: 다음 전송을 바로 하도록 last_sent 조정
                             last_sent = time.monotonic() - interval
-                            print(f'{port}/{index}: resume, fps -> {fps}')
+                            logger.info(f'{port}/{index}: resume, fps -> {fps}')
                             continue
                         except ValueError:
                             # 기타 텍스트 명령 무시
@@ -141,7 +144,7 @@ class PtzVideoServer():
                                 await websocket.close()
                                 if websocket in streamClient[index]:
                                     streamClient[index].remove(websocket)
-                                print(f'{port}/{index}: stop by client')
+                                logger.info(f'{port}/{index}: stop by client')
                                 break
                             else:
                                 # 숫자면 FPS 변경 또는 일시정지
@@ -150,7 +153,7 @@ class PtzVideoServer():
                                     if new_fps <= 0.0:
                                         paused = True
                                         await websocket.send_text("fps=0 (paused)")
-                                        print(f'{port}/{index}: paused')
+                                        logger.info(f'{port}/{index}: paused')
                                         # 일시정지 들어가면 다음 루프에서 paused 블록으로
                                         continue
                                     new_fps = min(60.0, max(1.0, new_fps))
@@ -158,7 +161,7 @@ class PtzVideoServer():
                                         fps = new_fps
                                         interval = 1.0 / fps
                                         await websocket.send_text(f"fps={int(fps)}")
-                                        print(f'{port}/{index}: fps -> {fps}')
+                                        logger.info(f'{port}/{index}: fps -> {fps}')
                                         # 즉시 반영: 다음 전송 타이밍을 당겨서 곧바로 전송 가능
                                         last_sent = time.monotonic() - interval
                                 except ValueError:
@@ -173,7 +176,7 @@ class PtzVideoServer():
                             break
                         except Exception as e:
                             # 필요 시 로깅/에러 카운팅 후 재시도/연결정책
-                            print(f'{port}/{index}: send error: {e}')
+                            logger.error(f'{port}/{index}: send error: {e}')
                             # 에러 정책에 따라 continue/break
                             continue
 
@@ -181,12 +184,12 @@ class PtzVideoServer():
                     try: await websocket.close()
                     finally:
                         if websocket in streamClient[index]: streamClient[index].remove(websocket)
-                    print(f'{port}/{index}: close, clients={len(streamClient[index])}')
+                    logger.error(f'{port}/{index}: close, clients={len(streamClient[index])}')
                 except Exception as e:
                     try: await websocket.close()
                     finally:
                         if websocket in streamClient[index]: streamClient[index].remove(websocket)
-                    print(f'{port}/{index}: stream err -> {e!r}, clients={len(streamClient[index])}')
+                    logger.error(f'{port}/{index}: stream err -> {e!r}, clients={len(streamClient[index])}')
 
         
         
