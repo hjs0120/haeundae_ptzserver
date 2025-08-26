@@ -9,7 +9,7 @@ from config import CONFIG
 
 log = logging.getLogger(__name__)
 
-
+'''
 def cctv_to_ptz_index(cctv_idx: int) -> int:
     """
     LINKED_CCTV_GROUPS = [[1,2],[3,4],...] 라면,
@@ -21,9 +21,22 @@ def cctv_to_ptz_index(cctv_idx: int) -> int:
         if cctv_idx in group:
             return i
     return cctv_idx
+'''
+def cctv_to_ptz_index(cctv_idx: int, ptz_list: list) -> int:
+    """
+    서버에서 받아온 ptzCCTV.linkedCCTV 값을 기준으로 매핑.
+    - cctv_idx 가 어떤 PTZ 의 linkedCCTV 안에 있으면 해당 PTZ index 반환
+    - 못 찾으면 그대로 fallback
+    """
+    for ptz in ptz_list:
+        try:
+            if ptz.linkedCCTV and cctv_idx in ptz.linkedCCTV:
+                return ptz.index
+        except Exception:
+            continue
+    return cctv_idx
 
-
-def subscriber_loop(ptz_queue_map: Dict[int, Any]):
+def subscriber_loop(ptz_queue_map: Dict[int, Any], ptz_list: list):
     """
     단일 MQTT 클라이언트가 메시지를 받아 PTZ 채널별 큐로 라우팅.
     - 기대 payload 예:
@@ -66,7 +79,7 @@ def subscriber_loop(ptz_queue_map: Dict[int, Any]):
             log.warning(f"[MQTT] missing cctvIndex/dateTime: keys={list(payload.keys())}")
             return
 
-        ptz_idx = cctv_to_ptz_index(cctv_idx)
+        ptz_idx = cctv_to_ptz_index(cctv_idx, ptz_list)
         q = ptz_queue_map.get(ptz_idx)
         if q is None:
             log.warning(f"[MQTT] no event queue for PTZ {ptz_idx} (from CCTV {cctv_idx})")

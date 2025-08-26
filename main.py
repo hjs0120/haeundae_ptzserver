@@ -1,19 +1,14 @@
 from torch.multiprocessing import Process, Queue
 import os 
-#from store.broadcastStore import BroadcastStore
 from store.cctvStore import DetectCCTVStore, PtzCCTVStore, DetectCCTV, PtzCCTV
 from store.configStore import ConfigStore, ServerConfig
 from store.groupConfigStore import GroupStore
 from store.configSettingStore import ConfigSettingStore
-#from store.smsStore import SmsDestinationStore, SmsConfigStore
 
 from videoProcess.sharedData import SharedDetectData, SharedPtzData
-#from videoProcess.detectVideoProcess import detectedVideo
 from videoProcess.videoProcess import video
 from videoProcess.saveVideo import SaveVideo
 
-#from module.broadcast import Broadcast
-#from api.detectServer import DetectVideoServer
 from api.ptzServer import PtzVideoServer
 from module.ptz import Ptz
 import requests
@@ -31,9 +26,6 @@ from config import CONFIG
 
 
 # from config import BACKEND_HOST
-
-#from dotenv import load_dotenv
-#load_dotenv()
 
 def setup_logging(
     default_path="logger.json",
@@ -57,13 +49,10 @@ class VideoServer():
     def __init__(self, BACKEND_HOST = "192.168.0.31:7000"):
         self.BACKEND_HOST = BACKEND_HOST
         self.ONVIF_PORT = 80
-        #self.broadcastStore = BroadcastStore(self.BACKEND_HOST)
         self.detectCCTVStore = DetectCCTVStore(self.BACKEND_HOST)
         self.ptzCCTVStore = PtzCCTVStore(self.BACKEND_HOST)
         self.configStore = ConfigStore(self.BACKEND_HOST)
         self.groupStore = GroupStore(self.BACKEND_HOST)
-        #self.smsDestinationStore = SmsDestinationStore(self.BACKEND_HOST)
-        #self.smsConfigStore = SmsConfigStore(self.BACKEND_HOST)
         self.configSettingStore = ConfigSettingStore(self.BACKEND_HOST)
         
         self.getDataLoad()
@@ -72,22 +61,18 @@ class VideoServer():
         self.ptz_mqtt = None
         
     def getDataLoad(self):
-        #self.broadcastStore.getData()
         self.detectCCTVStore.getData()
         self.ptzCCTVStore.getData()
         self.configStore.getData()
         self.groupStore.getData()
-        #self.smsDestinationStore.getData()
-        #self.smsConfigStore.getData()
+
         self.configSettingStore.getData()
         
-        #self.broadcastConfig = self.broadcastStore.broadcastConfig
         self.detectCCTV = self.detectCCTVStore.detectCCTV
         self.ptzCCTV = self.ptzCCTVStore.ptzCCTV
         self.config = self.configStore.config
         self.group = self.groupStore.group
-        #self.smsDestination = self.smsDestinationStore.smsDestination
-        #self.smsConfig = self.smsConfigStore.smsConfig
+
         self.configSetting = self.configSettingStore.configSettings
         
     def selectServerConfig(self) -> ServerConfig:
@@ -104,7 +89,6 @@ class VideoServer():
         index = self.config[inputServerIndex].index
         ptzPortList = self.config[inputServerIndex].ptzPortList
         wsIndex = self.config[inputServerIndex].wsIndex
-        #print(f"{index}번 서버 : \n - 지능형 영상 포트 : {detectPortList} \n - PTZ 영상 포트 : {ptzPortList} \n - 포트별 영상 갯수 : {wsIndex}")
         logger.info(f"{index}번 서버 : \n - PTZ 영상 포트 : {ptzPortList} \n - 포트별 영상 갯수 : {wsIndex}")
         
         return self.config[inputServerIndex]
@@ -113,7 +97,6 @@ class VideoServer():
     def matchingApiAndProcess(self) -> dict[ServerConfig, dict[str, dict[int, list[DetectCCTV | PtzCCTV]]]]:
             detectCnt = 0
             ptzCnt = 0 
-            #matchedServer:dict[ServerConfig, dict[str, dict[int, list[DetectCCTV | PtzCCTV]]]] = {}
             matchedServer:dict[ServerConfig, dict[str, dict[int, list[DetectCCTV ]]]] = {}
             
             for serverConfig in self.config:
@@ -191,8 +174,6 @@ class VideoServer():
         broadcasts: dict[Broadcast, list[int]] = {}
         self.compareWsIndex:dict[str, dict[DetectCCTV, dict]] = {}
         
-        #for broadcastData in self.broadcastConfig:
-        #    broadcasts[Broadcast(broadcastData, self.BACKEND_HOST, selectedConfig.index)] = broadcastData.targetDetectCCTV
 
         maxIndex = 0
         for typeFlag, MatchedServerData in selectedMatchedServer.items():
@@ -236,9 +217,7 @@ class VideoServer():
                             if index in group.targetDetectCCTV:
                                 isRunDetectFlag = True
                                 isRunDetect = True if group.isRunDetect == 'Y' else False if group.isRunDetect == 'N' else None
-                                #for smsDestination in self.smsDestination:  
-                                #    if group.group in smsDestination.group:
-                                #        smsPhoneList.append(smsDestination.phone)
+
                                 
                         if not isRunDetectFlag:
                             isRunDetect = True
@@ -256,15 +235,6 @@ class VideoServer():
                                         if index in ptzCCTV.linkedCCTV:
                                             linkedPtzCCTV = ptzCCTV
                         
-
-                        #self.detectVideoProcess.append(Process(target=detectedVideo, 
-                        #                                args=(detectCCTV, sharedDetectData, isRunDetect, targetBroadcast, selectedConfig, self.BACKEND_HOST, 
-                        #                                      smsPhoneList, self.smsConfig[0] if len(self.smsConfig) > 0 else None, saveVideo, linkedPtzCCTV,
-                        #                                      selectedSetting), 
-                        #                                daemon=True))
-                        
-                    #self.detectVideoServers.append(DetectVideoServer(port, self.BACKEND_HOST, selectedConfig, sharedDetectDataList, saveVideoList))
-
             
             if typeFlag == 'ptz':
                 self.ptzs: dict[Ptz, bool] = {}
@@ -308,15 +278,11 @@ class VideoServer():
                     
                     self.ptzVideoServers.append(PtzVideoServer(port, sharedPtzDataList, selectedConfig, self.ptzs))
             
-
-        #self.serverProcs = [Process(target=videoServer.run, args=(), daemon=True) for videoServer in self.detectVideoServers + self.ptzVideoServers]
-        #self.serverProcs = [Process(target=videoServer.run, args=(), daemon=True) for videoServer in self.ptzVideoServers]
-        #self.serverProcs = [Process(target=videoServer.run, args=(), daemon=True) for videoServer in self.detectVideoServers]
         self.serverProcs = [Process(target=videoServer.run, args=(), daemon=True) for videoServer in self.ptzVideoServers]
         # MQTT 서브스크라이버 프로세스 1개 생성
         self.ptz_mqtt = Process(
             target=subscriber_loop,
-            args=(self.ptz_event_queues,),
+            args=(self.ptz_event_queues,self.ptzCCTV),
             daemon=True
         )
 
@@ -326,8 +292,7 @@ class VideoServer():
         try:
             if self.ptz_mqtt is not None and not self.ptz_mqtt.is_alive():
                 self.ptz_mqtt.start()
-            #for proc in self.serverProcs + self.ptzVideoProcess + self.detectVideoProcess + self.ptzAutoControlProcs:
-            #for proc in self.serverProcs + self.detectVideoProcess :
+
             for proc in self.serverProcs + self.ptzVideoProcess + self.ptzAutoControlProcs:
                 proc.start()
             asyncio.run(self.sendMessage(f"ws://{self.BACKEND_HOST}", 'reload'))
@@ -336,9 +301,7 @@ class VideoServer():
 
     def killProcess(self):
         try:
-            #for proc in self.serverProcs + self.ptzVideoProcess + self.detectVideoProcess:
             for proc in self.serverProcs + self.ptzVideoProcess:
-            #for proc in self.serverProcs + self.detectVideoProcess:
                 if proc.is_alive():
                     proc.kill()
                     proc.join()

@@ -57,25 +57,17 @@ def _release_av(container=None, video_stream=None):
 
 
 
-#def video(ptzCCTV: PtzCCTV, sharedPtzData: SharedPtzData, backendHost, serverConfig:ServerConfig, saveVideoList:list[SaveVideo]):
 def video(ptzCCTV: PtzCCTV, sharedPtzData: SharedPtzData, backendHost, serverConfig:ServerConfig, saveVideoList:list[SaveVideo], event_queue: Queue | None):   
     url = ptzCCTV.rtsp
     cctvIndex = ptzCCTV.index
-    #wrongDetectionQueueList:list[Queue] = []
-    #saveEventQueueList:list[Queue] = []
-    #saveVideo = saveVideoList[0]
 
     fullFrameQuality = CONFIG["fullFrameQuality"]
 
-    #for saveVideo in saveVideoList:
-    #    wrongDetectionQueueList.append(saveVideo.wrongDetectionQueue)
-    #    saveEventQueueList.append(saveVideo.saveEventQueue)
 
     fps = 15
     maxDuration = 20
     saveBufferSize = int(maxDuration * fps)
     frameBuffer: deque[bytes] = deque(maxlen=saveBufferSize)
-    #frameBuffer: deque[VideoFrame] = deque(maxlen=saveBufferSize)
     future_needed_sec = 15
 
     saveVideoFrameCnt = 0
@@ -150,10 +142,6 @@ def video(ptzCCTV: PtzCCTV, sharedPtzData: SharedPtzData, backendHost, serverCon
                 except Exception:
                     frame_interval = None
             
-            #saveVideoFrameCnt:list[int] = [0] * len(saveVideoList)
-            #saveVideoRequestsList:list[dict[int, str]] = [{}] * len(saveVideoList)
-            
-            #print(f'test point {url}')
             
             prev_time = None
 
