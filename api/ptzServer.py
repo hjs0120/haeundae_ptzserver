@@ -9,6 +9,7 @@ import json
 from module.ptz import Ptz
 from store.configStore import ServerConfig
 from videoProcess.videoProcess import SharedPtzData
+from fastapi.staticfiles import StaticFiles
 
 import time
 
@@ -30,6 +31,8 @@ class PtzVideoServer():
             allow_methods=["*"], 
             allow_headers=["*"], 
         )
+
+        self.app.mount("/public", StaticFiles(directory="public"), name="public")
         
         @self.app.get("/")
         async def main():
@@ -67,8 +70,105 @@ class PtzVideoServer():
                     return True
                 await asyncio.sleep(0.05)
             return False
-        
-        
+
+        @self.app.websocket("/ws/stream/{index}")
+        async def websocketStream(websocket: WebSocket, index):
+            """
+            detect 서버와 동일한 흐름:
+            - accept → append → 단일 루프(전송 + 명령 폴링)
+            - 어떤 종료 경로든 finally에서 close/remove 보장
+            - 끊김 계열 예외는 조용히 종료
+            """
+            from starlette.websockets import WebSocketDisconnect, WebSocketState
+            import anyio, time
+
+            index = int(index)
+            await websocket.accept()
+            streamClient[index].append(websocket)
+            logger.info(f'{port}/{index}: accept, clients={len(streamClient[index])}')
+
+            # 초기 FPS (필요 시 설정/ENV에서 읽어오세요)
+            fps_current = 10
+            interval = 1.0 / max(1, fps_current)
+            last_sent = 0.0
+
+            try:
+                # 1) 첫 명령 1회 수신(옵션)
+                try:
+                    first_cmd = await websocket.receive_text()
+                    logger.debug(f'{port}/{index}: first_cmd="{first_cmd}"')
+                    if first_cmd.strip().lower() == "stop":
+                        return  # finally에서 정리
+                    if first_cmd.startswith("fps="):
+                        val = first_cmd.split("=",1)[1].strip()
+                        try:
+                            fps_current = max(1, int(val))
+                            interval = 1.0 / fps_current
+                            logger.info(f'{port}/{index}: set fps -> {fps_current}')
+                        except Exception:
+                            logger.warning(f'{port}/{index}: bad fps "{first_cmd}"')
+                except WebSocketDisconnect:
+                    return
+                except Exception as e:
+                    logger.debug(f'{port}/{index}: first_cmd read skip: {e}')
+
+                # 2) 단일 루프: 전송 + 명령 폴링
+                while websocket.client_state == WebSocketState.CONNECTED:
+                    try:
+                        now = time.monotonic()
+                        # 남은 시간 동안만 명령 폴링(논블로킹)
+                        remaining = max(0.0, (last_sent + interval) - now)
+                        if remaining > 0:
+                            try:
+                                with anyio.move_on_after(min(remaining, 0.05)):
+                                    cmd = await websocket.receive_text()
+                                    if cmd.startswith("fps="):
+                                        val = cmd.split("=",1)[1].strip()
+                                        try:
+                                            fps_current = max(1, int(val))
+                                            interval = 1.0 / fps_current
+                                            logger.info(f'{port}/{index}: set fps -> {fps_current}')
+                                        except Exception:
+                                            logger.warning(f'{port}/{index}: bad fps "{cmd}"')
+                                    elif cmd.strip().lower() == "stop":
+                                        break
+                            except WebSocketDisconnect:
+                                break
+                            except Exception:
+                                pass  # 폴링 에러는 무시
+
+                        # 전송 타이밍 도달 시 프레임 전송
+                        if time.monotonic() - last_sent >= interval:
+                            try:
+                                # ★ 전송 함수는 기존 구현 이름에 맞게 사용
+                                await _send_full_once(websocket, sharedPtzDataList, index)
+                                last_sent = time.monotonic()
+                            except (WebSocketDisconnect, ConnectionResetError, BrokenPipeError, anyio.EndOfStream):
+                                break  # 끊김은 조용히 종료
+                            except Exception as send_e:
+                                logger.error(f'{port}/{index}: send error: {send_e}')
+                                break
+
+                    except WebSocketDisconnect:
+                        break
+                    except Exception as loop_e:
+                        logger.error(f'{port}/{index}: loop error: {loop_e}')
+                        break
+
+            finally:
+                # 어떤 경로로든 항상 정리
+                try:
+                    await websocket.close()
+                except Exception:
+                    pass
+                try:
+                    if websocket in streamClient[index]:
+                        streamClient[index].remove(websocket)
+                except Exception:
+                    pass
+                logger.info(f'{port}/{index}: close, clients={len(streamClient[index])}')
+
+        '''
         @self.app.websocket("/ws/stream/{index}")
         async def websocketStream(websocket: WebSocket, index):
             index = int(index)
@@ -190,7 +290,7 @@ class PtzVideoServer():
                     finally:
                         if websocket in streamClient[index]: streamClient[index].remove(websocket)
                     logger.error(f'{port}/{index}: stream err -> {e!r}, clients={len(streamClient[index])}')
-
+        '''
         
         
     def run(self):

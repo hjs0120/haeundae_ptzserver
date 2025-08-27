@@ -175,10 +175,10 @@ def video(ptzCCTV: PtzCCTV, sharedPtzData: SharedPtzData, backendHost, serverCon
                     
                     try:
                         image = frame.to_ndarray(format='bgr24') 
-                        buffer = encode_webp_pillow(image, fullFrameQuality)
-                        if len(buffer) > len(sharedPtzData.sharedFullFrame):
-                            buffer = buffer[:len(sharedPtzData.sharedFullFrame)]
-                        sharedPtzData.sharedFullFrame[:len(buffer)] = buffer.tobytes()
+                        #buffer = encode_webp_pillow(image, fullFrameQuality)
+                        #if len(buffer) > len(sharedPtzData.sharedFullFrame):
+                        #    buffer = buffer[:len(sharedPtzData.sharedFullFrame)]
+                        #sharedPtzData.sharedFullFrame[:len(buffer)] = buffer.tobytes()
 
                         # === BUFFER TO SAVE: numpy(BGR)로만 보관 ===
                         try:
@@ -196,7 +196,26 @@ def video(ptzCCTV: PtzCCTV, sharedPtzData: SharedPtzData, backendHost, serverCon
 
                             ok, enc = cv2.imencode('.jpg', image, [cv2.IMWRITE_JPEG_QUALITY, 65])
                             if ok:
-                                frameBuffer.append(enc.tobytes())
+                                # enc: np.ndarray (uint8 1-D). tobytes()는 한 번만 호출해 재사용
+                                jpg_bytes = enc.tobytes()
+
+                                # 1) 이벤트 저장용 순환버퍼에 JPEG 바이트 push
+                                frameBuffer.append(jpg_bytes)
+                                saveVideoFrameCnt += 1
+
+                                # 2) 실시간 공유메모리에도 같은 JPEG 바이트 복사 (초과 방지)
+                                dst = sharedPtzData.sharedFullFrame
+                                maxlen = len(dst)
+                                n = len(jpg_bytes)
+                                if n > maxlen:
+                                    n = maxlen
+                                # 불필요한 복사 줄이기 위해 memoryview 사용
+                                dst[:n] = memoryview(jpg_bytes)[:n]
+                                # 길이 메타가 있다면 갱신 (없으면 무시)
+                                try:
+                                    sharedPtzData.sharedFullLen.value = n
+                                except Exception:
+                                    pass
                             saveVideoFrameCnt += 1
                         except Exception as _buf_e:
                             #print(f"[CH{cctvIndex}] drop bad frame before save: {_buf_e}", flush=True)
@@ -236,8 +255,13 @@ def video(ptzCCTV: PtzCCTV, sharedPtzData: SharedPtzData, backendHost, serverCon
                                         saver = saveVideoList[0] if (saveVideoList and len(saveVideoList) > 0) else SaveVideo()
                                         def _save():
                                             try:
-                                                saver.save_jpeg_bytes(snapshot, fps, out_path)
-                                                logger.info(f"[PTZ{cctvIndex}] saving started → {out_path}")
+                                                # ▶ 변경: JPEG 바이트를 그대로 ffmpeg(image2pipe/mjpeg)로 파이프
+                                                if snapshot:
+                                                    logger.info(f"[PTZ{cctvIndex}] save start frames={len(snapshot)} fps={int(fps)} → {out_path}")
+                                                    saver.save_jpegpipe(snapshot, int(fps), out_path)
+                                                    logger.info(f"[PTZ{cctvIndex}] save done → {out_path}")
+                                                else:
+                                                    logger.warning(f"[PTZ{cctvIndex}] skip save: empty snapshot → {out_path}")
                                             finally:
                                                 nonlocal saving
                                                 saving = False

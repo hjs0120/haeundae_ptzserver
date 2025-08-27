@@ -10,6 +10,8 @@ import unicodedata
 import cv2
 import numpy as np
 
+import subprocess
+
 import logging
 logger = logging.getLogger(__name__)
 
@@ -34,14 +36,200 @@ class SaveVideo:
          - mp4v(.mp4) → 실패 시 avc1(.mp4) → 실패 시 XVID(.avi)
       3) 성공한 임시 파일을 원래 경로(한글 이름)로 os.replace
     """
+        # 저장 방식 옵션: "opencv" 또는 "ffmpeg"
+    SAVE_METHOD = "ffmpeg"  # "opencv" 또는 "ffmpeg"로 지정
 
     def __init__(self):
         # 기존 인터페이스 호환용
         self.wrongDetectionQueue = None
 
     def save_numpy(self, frames: List[np.ndarray], fps: int, output_path: str) -> None:
-        t = Thread(target=self._save_numpy_thread, args=(frames, fps, output_path), daemon=True)
+        if self.SAVE_METHOD == "ffmpeg":
+            t = Thread(target=self._save_numpy_ffmpeg, args=(frames, fps, output_path), daemon=True)
+        else:
+            t = Thread(target=self._save_numpy_thread, args=(frames, fps, output_path), daemon=True)
         t.start()
+
+    # NEW: JPEG 바이트 리스트를 그대로 ffmpeg(image2pipe/mjpeg)로 흘려보내 NVENC 인코딩
+    def save_jpegpipe(self, frames_bytes: List[bytes], fps: int, output_path: str) -> None:
+        # --- Simplified: _save_numpy_ffmpeg 스타일 파일명 처리 + NPP 제거 ---
+        start_ts = time.time()
+        if not frames_bytes:
+            logger.warning(f"[SaveVideo] skip(empty) → {output_path}")
+            return
+        # ffmpeg 존재 확인
+        try:
+            import shutil
+            if not shutil.which("ffmpeg"):
+                raise FileNotFoundError("ffmpeg not found in PATH")
+        except Exception as e:
+            logger.error(f"[SaveVideo] ffmpeg check failed: {e}")
+            return
+
+        # 파일명: ASCII-safe 임시(mp4) → 성공 시 최종 한글 경로로 rename
+        safe_base = ascii_safe_name(output_path)
+        outdir = os.path.dirname(output_path) or "."
+        try:
+            os.makedirs(outdir, exist_ok=True)
+        except Exception as e:
+            logger.error(f"[SaveVideo] cannot make dir {outdir}: {e}")
+            return
+        tmp_dst = os.path.join(outdir, f"{safe_base}.mp4")   # _save_numpy_ffmpeg와 동일한 규칙
+
+        loglevel = os.getenv("FFMPEG_LOGLEVEL", "error")
+        cmd = [
+            "ffmpeg","-hide_banner","-nostats","-loglevel", loglevel,"-y",
+            "-r", str(fps),
+            "-f","image2pipe","-vcodec","mjpeg","-i","-",
+            # NPP 제거: CPU로 짝수화 + yuv420p 변환, 인코딩은 NVENC
+            "-vf","scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p",
+            "-c:v","h264_nvenc","-preset","p4",
+            "-rc","vbr","-cq","28",
+            "-b:v","2M","-maxrate","4M","-bufsize","4M",
+            "-g", str(fps*2), "-bf","0","-rc-lookahead","0",
+            "-an","-movflags","+faststart",
+            tmp_dst
+        ]
+
+        logger.info(f"[SaveVideo] spawn ffmpeg → {tmp_dst}")
+        wrote = 0
+        proc = None
+        try:
+            proc = subprocess.Popen(
+                cmd, stdin=subprocess.PIPE,
+                stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, bufsize=0
+            )
+            for b in frames_bytes:
+                try:
+                    proc.stdin.write(memoryview(b))
+                    wrote += 1
+                except BrokenPipeError:
+                    logger.error("[SaveVideo] EPIPE: ffmpeg closed early during write")
+                    break
+        except Exception:
+            logger.exception("[SaveVideo] pipe spawn/write exception")
+        finally:
+            try:
+                if proc and proc.stdin:
+                    proc.stdin.close()
+            except Exception:
+                logger.exception("[SaveVideo] stdin close exception")
+            ret, stderr_txt, dur = -999, "", time.time() - start_ts
+            if proc:
+                stderr_txt = (proc.stderr.read() or b"").decode("utf-8","ignore")
+                ret = proc.wait()
+                dur = time.time() - start_ts
+
+            if ret == 0:
+                # 성공 시 최종 경로로 원자적 교체
+                try:
+                    os.replace(tmp_dst, output_path)
+                except Exception as e:
+                    logger.error(f"[SaveVideo] rename failed {tmp_dst} -> {output_path}: {e}")
+                    raise
+                logger.info(f"[SaveVideo] ok frames={wrote} time={dur:.2f}s → {output_path}")
+            else:
+                logger.error(f"[SaveVideo] ffmpeg failed({ret}) frames={wrote} → {tmp_dst}\n{stderr_txt}")
+                with contextlib.suppress(Exception):
+                    if os.path.exists(tmp_dst):
+                        os.remove(tmp_dst)
+
+
+    def _save_numpy_ffmpeg(self, frames: List[np.ndarray], fps: int, output_path: str) -> None:
+        start_ts = time.time()
+        logger.info(f"[SaveVideo] (ffmpeg) start → {output_path}")
+        if not frames:
+            logger.warning(f"[SaveVideo] skip(empty) → {output_path}")
+            return
+        h, w = frames[0].shape[:2]
+        safe_base = ascii_safe_name(output_path)
+        outdir = os.path.dirname(output_path) or "."
+        os.makedirs(outdir, exist_ok=True)
+        tmp_dst = os.path.join(outdir, f"{safe_base}.mp4")
+        # ■ ffmpeg 로그 억제: -hide_banner -nostats -loglevel error
+        #   (성공 시 콘솔 출력 없음, 실패 시 stderr만 수집하여 로그로 남김)
+        loglevel = os.getenv("FFMPEG_LOGLEVEL", "error")  # 필요시 warning/info로 조정 가능
+        '''
+        cmd = [
+            "ffmpeg",
+            "-y",
+            "-hide_banner",
+            "-nostats",
+            "-loglevel", loglevel,            
+            "-f", "rawvideo",
+            "-vcodec", "rawvideo",
+            "-pix_fmt", "bgr24",
+            "-s", f"{w}x{h}",
+            "-r", str(fps),
+            "-i", "-",
+            "-an",
+            "-vcodec", "libx264",
+            "-pix_fmt", "yuv420p",
+            "-movflags", "+faststart",
+            tmp_dst
+        ]
+        '''
+        cmd = [
+            "ffmpeg","-hide_banner","-nostats","-loglevel", loglevel,
+            "-y",
+            "-f","rawvideo","-pix_fmt","bgr24","-s", f"{w}x{h}", "-r", str(fps), "-i","-",
+            "-vf","format=nv12",                 # 색공간만 CPU, 인코딩은 NVENC
+            "-c:v","h264_nvenc","-preset","p4","-rc","vbr","-cq","28",
+            "-b:v","2M","-maxrate","4M","-bufsize","4M",
+            "-an",                               # 오디오 없음
+            "-g", str(fps*2), "-movflags","+faststart",
+            tmp_dst
+        ]
+
+        try:
+            # stdout은 버리고(stderr만 캡처) → 성공 시에도 조용
+            proc = subprocess.Popen(
+                cmd,
+                stdin=subprocess.PIPE,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.PIPE,
+                bufsize=0,  # 파이프 버퍼링 최소화(추가 안전장치)
+            )
+
+            # ---- 프레임 스트리밍 (BrokenPipe 안전 처리) ----
+            try:
+                for frame in frames:
+                    b = frame.astype(np.uint8).tobytes()
+                    proc.stdin.write(b)
+            except (BrokenPipeError, ValueError) as werr:
+                # ffmpeg가 조기 종료(옵션/입력 불일치 등) → 파이프 닫힘
+                try:
+                    proc.stdin.close()
+                except Exception:
+                    pass
+                ret = proc.wait()
+                err = proc.stderr.read()
+                msg = err.decode(errors="ignore") if err else str(werr)
+                raise RuntimeError(f"ffmpeg early-exit rc={ret}: {msg.strip()[:800]}")
+
+            # ---- 입력 스트림 종료 통지 ----
+            try:
+                proc.stdin.close()
+            except Exception:
+                pass
+
+            # ---- 종료/에러 수집 ----
+            ret = proc.wait()
+            err = proc.stderr.read()
+            if ret != 0:
+                msg = err.decode(errors="ignore") if err else "unknown error"
+                raise RuntimeError(f"ffmpeg rc={ret}: {msg.strip()[:2000]}")
+
+            # ---- 성공 처리 ----
+            os.replace(tmp_dst, output_path)
+            dur = time.time() - start_ts
+            logger.info(f"[SaveVideo] (ffmpeg) done({len(frames)} frames, {dur:.2f}s) → {output_path}")
+
+        except Exception as e:
+            logger.error(f"[SaveVideo] (ffmpeg) ERROR {output_path}: {e}")
+            with contextlib.suppress(Exception):
+                if os.path.exists(tmp_dst):
+                    os.remove(tmp_dst)
 
     def save_jpeg_bytes(self, frames_bytes: list[bytes], fps: int, output_path: str):
         # 첫 프레임 디코드로 해상도 획득
@@ -66,12 +254,10 @@ class SaveVideo:
     # ===== 내부 구현 =====
     def _save_numpy_thread(self, frames: List[np.ndarray], fps: int, output_path: str) -> None:
         start_ts = time.time()
-        #print(f"[SaveVideo] start → {output_path}", flush=True)
         logger.info(f"[SaveVideo] start → {output_path}")
 
         # 0) 입력 가드
         if not frames:
-            #print(f"[SaveVideo] skip(empty) → {output_path}", flush=True)
             logger.warning(f"[SaveVideo] skip(empty) → {output_path}")
             return
 
@@ -80,7 +266,6 @@ class SaveVideo:
             outdir = os.path.dirname(output_path) or "."
             os.makedirs(outdir, exist_ok=True)
             if not os.access(outdir, os.W_OK):
-                #print(f"[SaveVideo] WARN: no write permission to dir: {outdir}", flush=True)
                 logger.warning(f"[SaveVideo] WARN: no write permission to dir: {outdir}")
 
             # 2) 기준 해상도(짝수 보정)
@@ -97,8 +282,8 @@ class SaveVideo:
             # 시도 후보 (파일경로, fourcc, 확장자)
             # mp4 우선, 안 되면 avi로
             attempts: List[Tuple[str, str, str]] = [
-                (os.path.join(outdir, f"{safe_base}.mp4"), "mp4v", ".mp4"),
                 (os.path.join(outdir, f"{safe_base}.mp4"), "avc1", ".mp4"),
+                (os.path.join(outdir, f"{safe_base}.mp4"), "mp4v", ".mp4"),
                 (os.path.join(outdir, f"{safe_base}.avi"), "XVID", ".avi"),
             ]
 
@@ -120,7 +305,6 @@ class SaveVideo:
                     if vw.isOpened():
                         opened_path = trial_path
                         opened_fourcc = fourcc_name
-                        #print(f"[SaveVideo] writer opened: {fourcc_name} → {trial_path}", flush=True)
                         logger.info(f"[SaveVideo] writer opened: {fourcc_name} → {trial_path}")
                         break
                     else:
@@ -164,12 +348,10 @@ class SaveVideo:
             os.replace(opened_path, final_dst)  # ASCII → 원래(한글) 경로로 원자적 이동
 
             dur = time.time() - start_ts
-            #print(f"[SaveVideo] done({wrote} frames, {dur:.2f}s, {opened_fourcc}) → {final_dst}", flush=True)
             logger.info(f"[SaveVideo] done({wrote} frames, {dur:.2f}s, {opened_fourcc}) → {final_dst}")
 
 
         except Exception as e:
-            #print(f"[SaveVideo] ERROR {output_path}: {e}", flush=True)
             logger.error(f"[SaveVideo] ERROR {output_path}: {e}")
             #traceback.print_exc()
             # 실패 시 임시파일 정리

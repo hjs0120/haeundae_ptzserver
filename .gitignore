@@ -1,2 +1,6 @@
 public/*
 data/
+_pycache_/
+api/_pycache_
+videoProcess/_pycache_/
+logs/
