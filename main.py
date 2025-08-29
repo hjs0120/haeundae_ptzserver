@@ -21,6 +21,7 @@ import logging
 import logging.config
 import json
 from ptz_mqtt import subscriber_loop
+import signal, sys
 
 from config import CONFIG
 
@@ -45,7 +46,7 @@ def setup_logging(
     else:
         logging.basicConfig(level=default_level)
 
-class VideoServer():
+class PtzServer():
     def __init__(self, BACKEND_HOST = "192.168.0.31:7000"):
         self.BACKEND_HOST = BACKEND_HOST
         self.ONVIF_PORT = 80
@@ -278,7 +279,7 @@ class VideoServer():
                     
                     self.ptzVideoServers.append(PtzVideoServer(port, sharedPtzDataList, selectedConfig, self.ptzs))
             
-        self.serverProcs = [Process(target=videoServer.run, args=(), daemon=True) for videoServer in self.ptzVideoServers]
+        self.serverProcs = [Process(target=ptz_video_server.run, args=(), daemon=True) for ptz_video_server in self.ptzVideoServers]
         # MQTT 서브스크라이버 프로세스 1개 생성
         self.ptz_mqtt = Process(
             target=subscriber_loop,
@@ -330,5 +331,17 @@ if __name__ == "__main__":
     logger.debug("디버그 모드 활성화")
     logger.error("에러 발생 예시")
     
-    videoserver = VideoServer(CONFIG["BACKEND_HOST"])
-    videoserver.main()
+    ptzserver = PtzServer(CONFIG["BACKEND_HOST"])
+
+    def _graceful_exit(signum, frame):
+        logger.info(f"SIG{signum} received -> shutting down children and exiting")
+        try:
+            ptzserver.killProcess()  # 자식 프로세스 정리
+        except Exception as e:
+            logger.error(f"killProcess error: {e!r}")
+        sys.exit(0)  # PID1 종료 → 컨테이너 종료(재시작 정책 있으면 재기동)
+
+    signal.signal(signal.SIGTERM, _graceful_exit)
+    signal.signal(signal.SIGINT,  _graceful_exit)
+
+    ptzserver.main()
