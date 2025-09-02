@@ -75,21 +75,23 @@ class PtzServer():
         
     def selectServerConfig(self) -> ServerConfig:
         logger.info("서버 설정을 선택해 주세요")
-        
-        
+        # 전체 목록 표시(리스트 순번 기준)
+        for idx, cfg in enumerate(self.config, start=1):
+            logger.info(f"{idx}번 서버(index={cfg.index}) : \n - 지능형 영상 포트 : {cfg.detectPortList} \n - 포트별 영상 갯수 : {cfg.wsIndex}")
+
         userInput = CONFIG["SERVER_INDEX"]
         try:
-            inputServerIndex = int(userInput) - 1
-        except :
-            logger.error("잘못된 입력 입니다, 다시입력해 주세요")
-
-        
-        index = self.config[inputServerIndex].index
-        ptzPortList = self.config[inputServerIndex].ptzPortList
-        wsIndex = self.config[inputServerIndex].wsIndex
-        logger.info(f"{index}번 서버 : \n - PTZ 영상 포트 : {ptzPortList} \n - 포트별 영상 갯수 : {wsIndex}")
-        
-        return self.config[inputServerIndex]
+            pos = int(userInput)  # 1-based
+        except Exception:
+            logger.error("잘못된 입력 입니다.")
+            raise
+        if 1 <= pos <= len(self.config):
+            selected = self.config[pos - 1]
+            logger.info(f"선택된 서버: {pos}번 (index={selected.index})")
+            return selected
+        else:
+            logger.error("존재하지 않는 서버 인덱스 입니다.")
+            raise IndexError("invalid SERVER_INDEX")
         
     def _filter_by_server_idx(self, cams, server_idx: int):
         """videoServerIdx == server_idx 인 카메라만 반환 (없거나 None이면 제외)"""
