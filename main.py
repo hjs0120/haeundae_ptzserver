@@ -50,7 +50,6 @@ class PtzServer():
     def __init__(self, BACKEND_HOST = "192.168.0.31:7000"):
         self.BACKEND_HOST = BACKEND_HOST
         self.ONVIF_PORT = 80
-        self.detectCCTVStore = DetectCCTVStore(self.BACKEND_HOST)
         self.ptzCCTVStore = PtzCCTVStore(self.BACKEND_HOST)
         self.configStore = ConfigStore(self.BACKEND_HOST)
         self.groupStore = GroupStore(self.BACKEND_HOST)
@@ -62,14 +61,12 @@ class PtzServer():
         self.ptz_mqtt = None
         
     def getDataLoad(self):
-        self.detectCCTVStore.getData()
         self.ptzCCTVStore.getData()
         self.configStore.getData()
         self.groupStore.getData()
 
         self.configSettingStore.getData()
         
-        self.detectCCTV = self.detectCCTVStore.detectCCTV
         self.ptzCCTV = self.ptzCCTVStore.ptzCCTV
         self.config = self.configStore.config
         self.group = self.groupStore.group
@@ -93,53 +90,77 @@ class PtzServer():
         logger.info(f"{index}번 서버 : \n - PTZ 영상 포트 : {ptzPortList} \n - 포트별 영상 갯수 : {wsIndex}")
         
         return self.config[inputServerIndex]
-
-                
-    def matchingApiAndProcess(self) -> dict[ServerConfig, dict[str, dict[int, list[DetectCCTV | PtzCCTV]]]]:
-            detectCnt = 0
-            ptzCnt = 0 
-            matchedServer:dict[ServerConfig, dict[str, dict[int, list[DetectCCTV ]]]] = {}
-            
-            for serverConfig in self.config:
-                matchedDetectPort:dict[int, list[DetectCCTV]] = {}
-                matchedPtzPort:dict[int, list[PtzCCTV]] = {}
-                matchedServer[serverConfig] = {}
-                
-                for detectPort in serverConfig.detectPortList:
-                    detectCCTVList: list[DetectCCTV] = []
-                    for _ in range(serverConfig.wsIndex):
-                        detectCCTVList.append(self.detectCCTV[detectCnt] if len(self.detectCCTV) > detectCnt else DetectCCTV())
-                        detectCnt += 1
-                    matchedDetectPort[detectPort] = detectCCTVList
-                    
-                for ptzPort in serverConfig.ptzPortList:
-                    ptzCCTVList: list[PtzCCTV] = []
-                    for _ in range(serverConfig.wsIndex):
-                        ptzCCTVList.append(self.ptzCCTV[ptzCnt] if len(self.ptzCCTV) > ptzCnt else PtzCCTV())
-                        ptzCnt += 1
-                    matchedPtzPort[ptzPort] = ptzCCTVList
-                    
-                matchedServer[serverConfig]["detect"] = matchedDetectPort
-                matchedServer[serverConfig]["ptz"] = matchedPtzPort
-                
-            return matchedServer
         
+    def _filter_by_server_idx(self, cams, server_idx: int):
+        """videoServerIdx == server_idx 인 카메라만 반환 (없거나 None이면 제외)"""
+        out = []
+        for c in cams:
+            try:
+                v = getattr(c, "videoServerIdx", None)
+                # 문자열로 올 수도 있으니 안전 변환
+                if v is not None:
+                    try: v = int(v)
+                    except: pass
+                if v == server_idx:
+                    out.append(c)
+            except Exception:
+                pass
+        return out
+
+    def _build_matched_for_selected_server(self, selectedConfig, server_idx: int):
+        """
+        선택된 서버 설정(selectedConfig)에 대해:
+        - 전체 리스트에서 videoServerIdx == server_idx 인 것만 추려
+        - selectedConfig.detectPortList / ptzPortList × wsIndex 로 슬롯 매핑
+        - setProcess에 바로 전달 가능한 dict를 반환
+        """
+        #detects = self._filter_by_server_idx(self.detectCCTV, server_idx)
+        ptzs    = self._filter_by_server_idx(self.ptzCCTV,    server_idx)
+
+        # (선택) 안정된 순서 보장을 원하면 index 기준 정렬
+        try:
+            #detects.sort(key=lambda x: (x.index is None, x.index))
+            ptzs.sort(key=lambda x: (x.index is None, x.index))
+        except Exception:
+            pass
+
+        #matched_detect = {}
+        matched_ptz    = {}
+
+        '''
+        # Detect 슬롯 채우기
+        d_cur = 0
+        for port in selectedConfig.detectPortList:
+            bucket = []
+            for _ in range(selectedConfig.wsIndex):
+                if d_cur < len(detects):
+                    bucket.append(detects[d_cur])
+                    d_cur += 1
+                else:
+                    bucket.append(DetectCCTV())  # 빈 슬롯 패딩
+            matched_detect[port] = bucket
+        '''
+
+        # PTZ 슬롯 채우기
+        p_cur = 0
+        for port in selectedConfig.ptzPortList:
+            bucket = []
+            for _ in range(selectedConfig.wsIndex):
+                if p_cur < len(ptzs):
+                    bucket.append(ptzs[p_cur])
+                    p_cur += 1
+                else:
+                    bucket.append(PtzCCTV())     # 빈 슬롯 패딩
+            matched_ptz[port] = bucket
+
+        #return {"detect": matched_detect, "ptz": matched_ptz}
+        return {"ptz": matched_ptz}
+  
+
     def updateWsIndex(self):
+        
         for cctvType, cctvData in self.compareWsIndex.items():
-            if cctvType == "detect":
-                for detectCCTV, wsUrl in cctvData.items():
-                    if detectCCTV.wsUrl != wsUrl:
-                        try:
-                            response = requests.get(f"http://{self.BACKEND_HOST}/forVideoServer/setDetectWsIndex?cctvIndex={detectCCTV.index}&ip={wsUrl['ip']}&port={wsUrl['port']}&index={wsUrl['index']}")
-                            if response.status_code == 200 :
-                                logger.info("setDetectWsIndex Success")
-                            else :
-                                logger.error("setDetectWsIndex Fail")
-                        except Exception as e :
-                            logger.error("setDetectWsIndex Fail : ", e)
-                        
-                    
-            elif cctvType == "ptz":
+            if cctvType == "ptz":
                 for ptzCCTV, wsUrl in cctvData.items():
                     if ptzCCTV.wsUrl != wsUrl:
                         try:
@@ -155,9 +176,12 @@ class PtzServer():
                 pass
               
     def main(self):
-        matchedServer = self.matchingApiAndProcess()
+
         selectedConfig = self.selectServerConfig()
-        self.setProcess(matchedServer, selectedConfig)
+        server_idx = int(CONFIG["SERVER_INDEX"])  # 환경/CONFIG에서 사용하던 값
+        selectedMatchedServer = self._build_matched_for_selected_server(selectedConfig, server_idx)
+        self.setProcess(selectedMatchedServer, selectedConfig)
+
         self.updateWsIndex()
         self.runProcess()
         
@@ -169,11 +193,12 @@ class PtzServer():
             
         # self.killProcess()
         
-    def setProcess(self, matchedServer:dict[ServerConfig, dict[str, dict[int, list[DetectCCTV]]]], selectedConfig:ServerConfig):
-        selectedMatchedServer = matchedServer[selectedConfig]
+    def setProcess(self, selectedMatchedServer: dict[str, dict[int, list]], selectedConfig: ServerConfig):
         selectedSetting = next((configSetting for configSetting in self.configSetting if configSetting.index == selectedConfig.index), None)
-        broadcasts: dict[Broadcast, list[int]] = {}
-        self.compareWsIndex:dict[str, dict[DetectCCTV, dict]] = {}
+        #broadcasts: dict[Broadcast, list[int]] = {}
+        #self.compareWsIndex:dict[str, dict[DetectCCTV, dict]] = {}
+
+        self.compareWsIndex: dict[str, dict] = {}
         
 
         maxIndex = 0
@@ -181,69 +206,23 @@ class PtzServer():
             if typeFlag == 'detect':
                 for detectCCTVs in MatchedServerData.values():
                     for detecCCTV in detectCCTVs:
-                        if maxIndex < detecCCTV.index:
-                            maxIndex = detecCCTV.index
+                        idx = getattr(detecCCTV, "index", None)
+                        if isinstance(idx, int) and idx > maxIndex:
+                            maxIndex = idx
         maxIndex += 1    
         
-        self.detectVideoServers: list[DetectVideoServer] = []
-        self.detectVideoProcess: list[Process] = []
-        self.matchedSharedData: dict[DetectCCTV, SharedDetectData] = {}
-        self.saveVideoDict: dict[int, SaveVideo] = {}
+
         self.ptzVideoServers:list[PtzVideoServer] = []
         self.ptzVideoProcess:list[Process] = []
         self.ptzAutoControlProcs: list[Process] = []
         
         for typeFlag, MatchedServerData in selectedMatchedServer.items():
-            if typeFlag == 'detect':
-                self.compareWsIndex["detect"] = {}
-                
-                for port, detectCCTVs in MatchedServerData.items():
-                    sharedDetectDataList: list[SharedDetectData] = []
-                    saveVideoList: list[SaveVideo] = []
-                    
-                    for i, detectCCTV in enumerate(detectCCTVs):
-                        smsPhoneList:list[str] = []
-                        
-                        index = detectCCTV.index
-                        sharedDetectData = SharedDetectData()
-                        self.matchedSharedData[detectCCTV] = sharedDetectData
-                        sharedDetectDataList.append(sharedDetectData)
-                        targetBroadcast = None
-                        for broadcast, targetDetectCCTV in broadcasts.items():
-                            if index in targetDetectCCTV:
-                                targetBroadcast = broadcast
-                                
-                        isRunDetectFlag = False    
-                        for group in self.group:
-                            if index in group.targetDetectCCTV:
-                                isRunDetectFlag = True
-                                isRunDetect = True if group.isRunDetect == 'Y' else False if group.isRunDetect == 'N' else None
-
-                                
-                        if not isRunDetectFlag:
-                            isRunDetect = True
-                        
-                        wsUrl = {'ip': selectedConfig.host, 'port': port, 'index': i}
-                        self.compareWsIndex["detect"][detectCCTV] = wsUrl
-                        saveVideo = SaveVideo()
-                        saveVideoList.append(saveVideo)
-                        self.saveVideoDict[index] = saveVideo
-                        
-                        for type, MatchedServerData in selectedMatchedServer.items():
-                            if type == 'ptz':
-                                for ptzCCTVs in MatchedServerData.values():
-                                    for ptzCCTV in ptzCCTVs: 
-                                        if index in ptzCCTV.linkedCCTV:
-                                            linkedPtzCCTV = ptzCCTV
-                        
-            
             if typeFlag == 'ptz':
                 self.ptzs: dict[Ptz, bool] = {}
                 self.compareWsIndex["ptz"] = {}
                 
                 for port, ptzCCTVs in MatchedServerData.items():
                     sharedPtzDataList: list[SharedPtzData] = []
-                    saveVideoList: list[SaveVideo] = []
                     
                     for i, ptzCCTV in enumerate(ptzCCTVs):
                         # 채널별 이벤트 큐 준비
@@ -252,28 +231,21 @@ class PtzServer():
 
                         sharedPtzData = SharedPtzData()
                         sharedPtzDataList.append(sharedPtzData)
-                        sharedDetectDataListForPtz:list[SharedDetectData] = []
-                        detectCCTVListForPtz:list[DetectCCTV] = []
-                        
-                        for detectCCTV, sharedDetectData in self.matchedSharedData.items():
-                           if detectCCTV.index in ptzCCTV.linkedCCTV :
-                               sharedDetectDataListForPtz.append(sharedDetectData)
-                               detectCCTVListForPtz.append(detectCCTV)
-                               
-                        for index, saveVideo in self.saveVideoDict.items():
-                            if index in ptzCCTV.linkedCCTV:
-                                saveVideoList.append(saveVideo)
-                                
+                        # Detect와의 연결/공유데이터는 사용하지 않음 → 빈 리스트 전달
+                        sharedDetectDataListForPtz: list[SharedDetectData] = []
+                        detectCCTVListForPtz: list = []
+
                         ptz = Ptz(ptzCCTV, self.ONVIF_PORT, sharedDetectDataListForPtz, detectCCTVListForPtz)
-                        ptzAvailable = ptz.connect()
+                        #ptzAvailable = ptz.connect()
+                        ptzAvailable = False
                         self.ptzs[ptz] = ptzAvailable
-                        self.ptzAutoControlProcs.append(Process(target=ptz.AutoControlProc, args=[ptzAvailable], daemon=True))
+                        #self.ptzAutoControlProcs.append(Process(target=ptz.AutoControlProc, args=[ptzAvailable], daemon=True))
                         
                         wsUrl = {'ip': selectedConfig.host, 'port': port, 'index': i}
                         self.compareWsIndex["ptz"][ptzCCTV] = wsUrl
                         
                         self.ptzVideoProcess.append(Process(target=video, 
-                                                            args=(ptzCCTV, sharedPtzData, self.BACKEND_HOST, selectedConfig, saveVideoList,
+                                                            args=(ptzCCTV, sharedPtzData, self.BACKEND_HOST, selectedConfig, [],
                                                             self.ptz_event_queues.get(ptzCCTV.index)), 
                                                             daemon=True))
                     

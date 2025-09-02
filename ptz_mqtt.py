@@ -51,7 +51,7 @@ def subscriber_loop(ptz_queue_map: Dict[int, Any], ptz_list: list):
     host = CONFIG.get("MQTT_BROKER", "127.0.0.1")
     port = int(CONFIG.get("MQTT_PORT", 1883))
     topic_base = CONFIG.get("MQTT_TOPIC", "detect/events").rstrip("/")
-    client_id = CONFIG.get("CLIENT_ID", "ptz-subscriber")
+    client_id = CONFIG.get("CLIENT_ID_ptz_server", "ptz-server")
     username = CONFIG.get("MQTT_USERNAME") or None
     password = CONFIG.get("MQTT_PASSWORD") or None
 

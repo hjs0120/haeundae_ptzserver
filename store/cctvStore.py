@@ -21,6 +21,7 @@ class DetectCCTV():
         self.linkedPtzValue = None
         self.wsUrl = None
         self.detectionSensitivity = None
+        self.videoServerIdx = None
         
         self.roiPickle = pickle.dumps("")
         self.roePickle = pickle.dumps("")
@@ -34,7 +35,11 @@ class DetectCCTV():
             
     def setData(self, data:dict, key: str):
         try :
-            setattr(self, key, data[key])
+            val = data[key]
+            if key == "videoServerIdx" and val is not None:
+                try: val = int(val)
+                except: pass
+            setattr(self, key, val)
         except Exception as e :
             setattr(self, key, None)
             print('setData err : ', e)
@@ -56,6 +61,7 @@ class PtzCCTV():
         self.autoZoomValue = None
         self.basePtzValue = None
         self.wsUrl = None
+        self.videoServerIdx = None
 
     def getData(self, row: dict):
         keys = row.keys() if row else []
@@ -64,7 +70,11 @@ class PtzCCTV():
             
     def setData(self, data:dict, key: str):
         try :
-            setattr(self, key, data[key])
+            val = data[key]
+            if key == "videoServerIdx" and val is not None:
+                try: val = int(val)
+                except: pass            
+            setattr(self, key, val)
         except Exception as e :
             setattr(self, key, None)
             print('setData err : ', e)
