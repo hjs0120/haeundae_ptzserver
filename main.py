@@ -77,7 +77,7 @@ class PtzServer():
         logger.info("서버 설정을 선택해 주세요")
         # 전체 목록 표시(리스트 순번 기준)
         for idx, cfg in enumerate(self.config, start=1):
-            logger.info(f"{idx}번 서버(index={cfg.index}) : \n - 지능형 영상 포트 : {cfg.detectPortList} \n - 포트별 영상 갯수 : {cfg.wsIndex}")
+            logger.info(f"{idx}번 서버(index={cfg.index}) : \n - 지능형 영상 포트 : {cfg.ptzPortList} \n - 포트별 영상 갯수 : {cfg.wsIndex}")
 
         userInput = CONFIG["SERVER_INDEX"]
         try:
