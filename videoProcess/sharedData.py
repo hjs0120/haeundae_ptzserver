@@ -5,6 +5,8 @@ from config import CONFIG
 
 import queue as pyqueue
 
+import time
+
 
 class SharedDetectData:
     def __init__(self):
@@ -31,10 +33,22 @@ class SharedPtzData:
     # 큐가 가득 차면 가장 오래된 것 하나 버리고 최신을 넣는다.
     def push_latest_full(self, jpg: bytes) -> None:
         try:
+            # 먼저 시도
+            self.fullFrameQ.put_nowait(jpg)
+            return
+        except pyqueue.Full:
+            pass
+
+        # 전부 비우기 (가득 차 있으면 모두 버림)
+        try:
+            while True:
+                _ = self.fullFrameQ.get_nowait()
+        except pyqueue.Empty:
+            pass
+
+        # 최신 한 장만 넣기
+        try:
             self.fullFrameQ.put_nowait(jpg)
         except pyqueue.Full:
-            try:
-                _ = self.fullFrameQ.get_nowait()
-            except pyqueue.Empty:
-                pass
-            self.fullFrameQ.put_nowait(jpg)
+            # 소비자가 완전히 멈춘 극단상황 – 정책상 무시
+            pass   

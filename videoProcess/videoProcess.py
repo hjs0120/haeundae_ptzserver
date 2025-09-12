@@ -175,10 +175,6 @@ def video(ptzCCTV: PtzCCTV, sharedPtzData: SharedPtzData, backendHost, serverCon
                     
                     try:
                         image = frame.to_ndarray(format='bgr24') 
-                        #buffer = encode_webp_pillow(image, fullFrameQuality)
-                        #if len(buffer) > len(sharedPtzData.sharedFullFrame):
-                        #    buffer = buffer[:len(sharedPtzData.sharedFullFrame)]
-                        #sharedPtzData.sharedFullFrame[:len(buffer)] = buffer.tobytes()
 
                         # === BUFFER TO SAVE: numpy(BGR)로만 보관 ===
                         try:
@@ -192,10 +188,15 @@ def video(ptzCCTV: PtzCCTV, sharedPtzData: SharedPtzData, backendHost, serverCon
                             # 짝수 해상도로 보정(인코딩 호환)
                             tw, th = w - (w % 2), h - (h % 2)
                             if (tw != w) or (th != h):
-                                image = cv2.resize(image, (tw, th), interpolation=cv2.INTER_LINEAR)
+                                try:
+                                    image = cv2.resize(image, (tw, th), interpolation=cv2.INTER_LINEAR)
+                                except cv2.error as e:
+                                    raise RuntimeError(f"cv2.resize failed {w}x{h}->{tw}x{th}: {e}")
 
                             ok, enc = cv2.imencode('.jpg', image, [cv2.IMWRITE_JPEG_QUALITY, 65])
                             if ok:
+                                if not ok:
+                                    raise RuntimeError(f"cv2.imencode returned False (size={image.shape})")                                
                                 # enc: np.ndarray (uint8 1-D). tobytes()는 한 번만 호출해 재사용
                                 jpg_bytes = enc.tobytes()
 
@@ -204,12 +205,18 @@ def video(ptzCCTV: PtzCCTV, sharedPtzData: SharedPtzData, backendHost, serverCon
                                 saveVideoFrameCnt += 1
 
                                 # 2) 실시간 공유메모리에도 같은 JPEG 바이트 복사 (초과 방지)
-                                sharedPtzData.push_latest_full(jpg_bytes)  
+                                sharedPtzData.push_latest_full(jpg_bytes)
+                                #ok = sharedDetectData.push_latest_full(jpg_bytes)
+                                #if not ok:
+                                    # 필요 시 로그/카운터
+                                #    logger.warning(f"[CH{cctvIndex}] fullFrameQ still full — dropped a frame")     
 
                             
                         except Exception as _buf_e:
                             #print(f"[CH{cctvIndex}] drop bad frame before save: {_buf_e}", flush=True)
-                            logger.error(f"[CH{cctvIndex}] drop bad frame before save: {_buf_e}")
+                            shp  = tuple(image.shape) if (image is not None and hasattr(image, "shape")) else None
+                            dtype = getattr(image, "dtype", None)
+                            logger.error(f"[CH{cctvIndex}] drop bad frame before save: {type(_buf_e).__name__}: {_buf_e} | shape={shp} dtype={dtype}")  
 
                         # 1) 이벤트 큐 폴링 → 저장 요청 등록
                         if event_queue is not None:
