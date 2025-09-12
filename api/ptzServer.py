@@ -14,6 +14,8 @@ from fastapi.staticfiles import StaticFiles
 import time, os, signal
 from pydantic import BaseModel
 
+import queue as pyqueue
+
 import logging
 logger = logging.getLogger(__name__)
 
@@ -73,11 +75,28 @@ class PtzVideoServer():
         
         async def _send_full_once(websocket, sharedPtzDataList, index: int):
             sd = sharedPtzDataList[index]
-            full_len = getattr(sd, "sharedFullLen", None)
-            if isinstance(full_len, int) and full_len > 0:
-                await websocket.send_bytes(bytes(sd.sharedFullFrame[:full_len]))
-            else:
-                await websocket.send_bytes(bytes(sd.sharedFullFrame[:]))  # 길이 메타 없으면 전체
+            
+            # 1) 최소 1장 확보(블로킹, 타임아웃 가볍게)
+            try:
+                ref = sd.fullFrameQ.get(True, 1.0)
+            except pyqueue.Empty:
+                # 생산 지연 시 직전 정상 프레임 유지
+                if last_good is not None:
+                    ref = last_good
+                else:
+                    await asyncio.sleep(0.01)
+                    #continue
+
+            # 2) 그 사이 도착한 추가 프레임이 있으면 모두 비워 '마지막 것'만
+            try:
+                while True:
+                    ref = sd.fullFrameQ.get_nowait()
+            except pyqueue.Empty:
+                pass
+
+            await websocket.send_bytes(ref)
+
+            last_good = ref
         
         def _is_ready(sd) -> bool:
             full_len = getattr(sd, "sharedFullLen", None)

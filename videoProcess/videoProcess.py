@@ -204,19 +204,9 @@ def video(ptzCCTV: PtzCCTV, sharedPtzData: SharedPtzData, backendHost, serverCon
                                 saveVideoFrameCnt += 1
 
                                 # 2) 실시간 공유메모리에도 같은 JPEG 바이트 복사 (초과 방지)
-                                dst = sharedPtzData.sharedFullFrame
-                                maxlen = len(dst)
-                                n = len(jpg_bytes)
-                                if n > maxlen:
-                                    n = maxlen
-                                # 불필요한 복사 줄이기 위해 memoryview 사용
-                                dst[:n] = memoryview(jpg_bytes)[:n]
-                                # 길이 메타가 있다면 갱신 (없으면 무시)
-                                try:
-                                    sharedPtzData.sharedFullLen.value = n
-                                except Exception:
-                                    pass
-                            saveVideoFrameCnt += 1
+                                sharedPtzData.push_latest_full(jpg_bytes)  
+
+                            
                         except Exception as _buf_e:
                             #print(f"[CH{cctvIndex}] drop bad frame before save: {_buf_e}", flush=True)
                             logger.error(f"[CH{cctvIndex}] drop bad frame before save: {_buf_e}")
